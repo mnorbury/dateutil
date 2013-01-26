@@ -32,6 +32,11 @@ def test_parse_datetime_string_with_no_delimiters():
     result          = dateutil.parse( datetime_string )
     eq_( result, datetime( 2012, 12, 6, 12, 53, 56 ) )
 
+def test_parse_datetime_string_with_timezone_ending():
+    datetime_string = "2012-12-06T12:53:56.123Z"
+    result          = dateutil.parse( datetime_string )
+    eq_( result, datetime( 2012, 12, 6, 12, 53, 56, 123000 ) )
+
 def test_parse_partial_datetime_string_with_no_delimiters():
     datetime_string = "20121206"
     result          = dateutil.parse( datetime_string )
