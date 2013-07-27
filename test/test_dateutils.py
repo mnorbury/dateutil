@@ -22,6 +22,11 @@ def test_parse_full_datetime_string():
     result          = dateutil.parse( datetime_string )
     eq_( result, datetime( 2012, 12, 6, 12, 53, 56, 123000 ) )
 
+def test_parse_full_datetime_string_with_space():
+    datetime_string = "2012-12-06 12:53:56.123"
+    result          = dateutil.parse( datetime_string )
+    eq_( result, datetime( 2012, 12, 6, 12, 53, 56, 123000 ) )
+
 def test_parse_partial_datetime_string():
     datetime_string = "2012-12-06T12:53:56"
     result          = dateutil.parse( datetime_string )

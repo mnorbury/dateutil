@@ -51,7 +51,7 @@ def parse( datetime_string ):
     '''
     logger.debug("Parsing {0}".format( datetime_string ))
 
-    results    = re.split('-|T|:|\.', datetime_string.rstrip('Z') )
+    results    = re.split('-|T|:|\.| ', datetime_string.rstrip('Z') )
     if len(results) == 1:
         results = __parse_datestring( datetime_string )
 
