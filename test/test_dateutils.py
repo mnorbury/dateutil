@@ -11,7 +11,7 @@ Author:
 December 2012
 '''
 
-from nose.tools import eq_, assert_almost_equal
+from nose.tools import eq_, assert_almost_equal, assert_true
 
 from datetime import datetime, date, time, timedelta
 
@@ -20,12 +20,17 @@ from lcogt import dateutil
 def test_parse_full_datetime_string():
     datetime_string = "2012-12-06T12:53:56.123"
     result          = dateutil.parse( datetime_string )
-    eq_( result, datetime( 2012, 12, 6, 12, 53, 56, 123000 ) )
+    assert_true( abs(result-datetime( 2012, 12, 6, 12, 53, 56, 123000 )) < timedelta(microseconds=10) )
+
+def test_parse_full_datetime_string_with_microseconds():
+    datetime_string = "2013-06-21T20:30:40.066183Z"
+    result          = dateutil.parse( datetime_string )
+    eq_( result, datetime( 2013, 6, 21, 20, 30, 40, 66183 ) )
 
 def test_parse_full_datetime_string_with_space():
     datetime_string = "2012-12-06 12:53:56.123"
     result          = dateutil.parse( datetime_string )
-    eq_( result, datetime( 2012, 12, 6, 12, 53, 56, 123000 ) )
+    assert_true( abs(result-datetime( 2012, 12, 6, 12, 53, 56, 123000 )) < timedelta(microseconds=10) )
 
 def test_parse_partial_datetime_string():
     datetime_string = "2012-12-06T12:53:56"
@@ -40,7 +45,7 @@ def test_parse_datetime_string_with_no_delimiters():
 def test_parse_datetime_string_with_timezone_ending():
     datetime_string = "2012-12-06T12:53:56.123Z"
     result          = dateutil.parse( datetime_string )
-    eq_( result, datetime( 2012, 12, 6, 12, 53, 56, 123000 ) )
+    assert_true( abs(result-datetime( 2012, 12, 6, 12, 53, 56, 123000 )) < timedelta(microseconds=10) )
 
 def test_parse_partial_datetime_string_with_no_delimiters():
     datetime_string = "20121206"
@@ -55,12 +60,17 @@ def test_parse_date_string():
 def test_parse_time_string():
     time_string     = "12:53:56.123"
     result          = dateutil.parse( time_string )
-    eq_( result, time( 12, 53, 56, 123000 ) )
+    eq_( result.hour, 12)
+    eq_( result.minute, 53)
+    eq_( result.second, 56)
+    assert_true( abs(result.microsecond-123000) <= 1 )
 
 def test_parse_time_string_without_fractional_seconds():
     time_string     = "12:53:56"
     result          = dateutil.parse( time_string )
-    eq_( result, time( 12, 53, 56 ) )
+    eq_( result.hour, 12)
+    eq_( result.minute, 53)
+    eq_( result.second, 56)
 
 def test_datetime2unixtime():
     timestamp        = datetime(2012,12,6,12,0,0,123000)

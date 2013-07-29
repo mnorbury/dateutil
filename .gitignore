@@ -2,3 +2,6 @@
 buid
 dist
 build
+.project
+.pydevproject
+src/lcogt_dateutils.egg-info

@@ -11,6 +11,7 @@ Author:
 December 2012
 """
 
+import math
 import time, re
 import datetime as dt
 import logging
@@ -51,11 +52,11 @@ def parse( datetime_string ):
     '''
     logger.debug("Parsing {0}".format( datetime_string ))
 
-    results    = re.split('-|T|:|\.| ', datetime_string.rstrip('Z') )
+    results    = re.split('-|T|:| ', datetime_string.rstrip('Z') )
     if len(results) == 1:
         results = __parse_datestring( datetime_string )
 
-    components = [ int( component ) for component in results ]
+    components = [ _convert_component(component) for component in results ]
 
     logger.debug("Processing components {0}".format(components))
 
@@ -67,14 +68,21 @@ def parse( datetime_string ):
         logging.debug("Converting to time instance")
         if __fractional_second( datetime_string ) :
             logging.debug("Scaling fractional second to microseconds")
-            components[-1] *= 1000
+            remainder, seconds = math.modf(components[-1])
+            components = components[:-1] + [int(seconds), int(remainder*1000000)]
         return dt.time( *components )
 
     if __fractional_second( datetime_string ) :
         logging.debug("Scaling fractional second to microseconds")
-        components[-1] *= 1000
+        remainder, seconds = math.modf(components[-1])
+        components = components[:-1] + [int(seconds), int(remainder*1000000)]
     logging.debug("Returning datetime instance")
     return dt.datetime( *components )
+
+def _convert_component(component):
+    if '.' in component:
+        return float(component)
+    return int(component)
 
 def __datestring( inputstring ):
     ''' Return true if this is a date string. '''
