@@ -86,3 +86,40 @@ def test_timedelta2seconds():
     timeinterval     = timedelta( days = 1, minutes = 1, microseconds=100000 )
     result           = dateutil.timedelta2seconds( timeinterval )
     eq_( result, 86460.1 )
+
+def test_raises_exception_on_bad_string_input():
+    datetime_string = "bad string"
+
+    try:
+        result          = dateutil.parse( datetime_string )
+        assert False, 'Expected an exception here'
+    except dateutil.ParseException as e:
+        eq_(str(e), "Unable to create datetime from 'bad string'")
+
+def test_raises_exception_on_bad_date_input():
+    datetime_string = "2012-12-6.3"
+
+    try:
+        result          = dateutil.parse( datetime_string )
+        assert False, 'Expected an exception here'
+    except dateutil.ParseException as e:
+        eq_(str(e), "integer argument expected, got float")
+
+def test_raises_exception_on_bad_time_input():
+    datetime_string = "00:12.2:00"
+
+    try:
+        result          = dateutil.parse( datetime_string )
+        assert False, 'Expected an exception here'
+    except dateutil.ParseException as e:
+        eq_(str(e), "integer argument expected, got float")
+
+def test_raises_exception_on_bad_datetime_input():
+    datetime_string = "2012-12-6T00:12.2:00"
+
+    try:
+        result          = dateutil.parse( datetime_string )
+        assert False, 'Expected an exception here'
+    except dateutil.ParseException as e:
+        eq_(str(e), "integer argument expected, got float")
+
