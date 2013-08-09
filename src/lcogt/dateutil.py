@@ -16,6 +16,7 @@ import math
 import time, re
 import datetime as dt
 import logging
+import warnings
 
 logger = logging.getLogger(__name__)
 
@@ -91,10 +92,26 @@ def parse( datetime_string ):
 
 def __create_dt_type(function_name, components):
     ''' Convert tokenised input into date, time or datetime objects as appropriate,
-        repackaging any exceptions. '''
+        repackaging any exceptions.
+
+        DeprecationWarnings are raised as ParseException to force early versions of
+        Python (e.g 2.6.x) to comply with later versions (2.7.x).
+    '''
     try:
-        date = getattr(dt, function_name)( *components )
-        return date
+        with warnings.catch_warnings(record=True) as w:
+            # Cause all warnings to always be triggered
+            warnings.simplefilter("always")
+
+            # Actually create the date instance
+            date = getattr(dt, function_name)( *components )
+
+            # Raise an exception if we have any warnings
+            if len(w):
+                warning = w[0]
+                msg     = str(warning.message)
+                raise ParseException(msg)
+
+            return date
     except (TypeError, ValueError) as e:
         msg = str(e)
         raise ParseException(msg)
