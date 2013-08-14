@@ -13,7 +13,7 @@ December 2012
 
 from __future__ import division
 import math
-import time, re
+import calendar, re
 import datetime as dt
 import logging
 import warnings
@@ -33,7 +33,7 @@ class ParseException(Exception):
 def datetime2unixtime( timestamp ):
     ''' Convert a datetime instance to unixtime. '''
     microsecond = timestamp.microsecond / 1000000.0
-    return time.mktime( timestamp.timetuple() ) + microsecond
+    return calendar.timegm( timestamp.timetuple() ) + microsecond
 
 def unixtime2datetime( timestamp ):
     ''' Convert unixtime to datetime instance. '''

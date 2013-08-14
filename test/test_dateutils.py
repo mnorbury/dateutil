@@ -75,12 +75,17 @@ def test_parse_time_string_without_fractional_seconds():
 def test_datetime2unixtime():
     timestamp        = datetime(2012,12,6,12,0,0,123000)
     result           = dateutil.datetime2unixtime( timestamp )
-    assert_almost_equal( result, 1354824000.123, places=3 )
+    assert_almost_equal( result, 1354795200.123, places=3 )
 
 def test_unixtime2datetime():
     timestamp        = 1354824000.123
     result           = dateutil.unixtime2datetime( timestamp )
     eq_( result, datetime (2012, 12, 6, 20, 0, 0, 123000) )
+
+def test_unixtime_roundtrip():
+    unixtime = dateutil.unixtime2datetime(0)
+    result   = dateutil.datetime2unixtime(unixtime)
+    eq_( result, 0 )
 
 def test_timedelta2seconds():
     timeinterval     = timedelta( days = 1, minutes = 1, microseconds=100000 )
