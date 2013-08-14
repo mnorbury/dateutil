@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
         name = "lcogt-dateutils",
-        version = "0.1.0",
+        version = "0.1.1",
         description = "Utility functions for manipulating datetimes",
         author = "Martin Norbury",
         author_email = "mnorbury@lcogt.net",
