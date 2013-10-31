@@ -9,5 +9,6 @@ setup(
         url = "http://www.lcogt.net/",
         packages = find_packages('src'),
         package_dir = {'':'src'},
+        test_suite="nose.collector",
         install_requires = []
      )
