@@ -2,3 +2,4 @@ The dateutil library provides utility functions for manipulating Python
 datetime instances.
 
 https://api.travis-ci.org/mnorbury/dateutil.png
+"!https://travis-ci.org/[mnorbury/dateutil.png!":https://travis-ci.org/mnorbury/dateutil
